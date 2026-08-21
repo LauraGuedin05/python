@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cliente - Locadora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green-50: #eef2ff;
+            --green-100: #e0e7ff;
+            --green-200: #c7d2fe;
+            --green-300: #a5b4fc;
+            --green-400: #818cf8;
+            --green-500: #6366f1;
+            --green-600: #4f46e5;
+            --green-700: #4338ca;
+            --green-800: #3730a3;
+            --green-900: #312e81;
+            --gray-50: #0b1120;
+            --gray-100: #111a2e;
+            --gray-200: #1e293b;
+            --gray-300: #334155;
+            --gray-400: #64748b;
+            --gray-500: #94a3b8;
+            --gray-600: #cbd5e1;
+            --gray-700: #e2e8f0;
+            --gray-800: #f1f5f9;
+            --gray-900: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--gray-50);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(79,70,229,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(79,70,229,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+        }
+
+        /* ── SIDEBAR + CARD LAYOUT ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 0;
+            width: 860px;
+            max-width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--green-700);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; right: -60px;
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: -40px; left: -40px;
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .sidebar-brand {
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-logo {
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff;
+            margin-bottom: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar h1 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .sidebar p {
+            color: rgba(255,255,255,0.65);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .sidebar-steps {
+            position: relative;
+            z-index: 1;
+            margin-top: 2.5rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-dot {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .step-dot.active {
+            background: #fff;
+            color: var(--green-700);
+            border-color: #fff;
+        }
+
+        .step-text strong {
+            display: block;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .step-text span {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+
+        .sidebar-footer {
+            position: relative;
+            z-index: 1;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-footer .avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: rgba(255,255,255,0.8);
+        }
+
+        .sidebar-footer span {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: var(--gray-100);
+            padding: 2.75rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header .eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--green-400);
+            margin-bottom: 6px;
+        }
+
+        .form-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .form-header p {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        /* PROGRESS */
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green-500), var(--green-400));
+            border-radius: 99px;
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-weight: 500;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* FIELDS */
+        .fields-grid {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 7px;
+        }
+
+        .field label i {
+            font-size: 15px;
+            color: var(--green-400);
+        }
+
+        .field input {
+            width: 100%;
+            padding: 11px 42px 11px 14px;
+            font-size: 14px;
+            font-family: 'Inter', Arial, sans-serif;
+            border: 1.5px solid var(--gray-300);
+            border-radius: 10px;
+            background: var(--gray-200);
+            color: var(--gray-800);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .field input:hover {
+            border-color: var(--green-300);
+            background: var(--gray-300);
+        }
+
+        .field input:focus {
+            border-color: var(--green-500);
+            background: var(--gray-300);
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.10);
+        }
+
+        .field input::placeholder { color: var(--gray-500); }
+
+        .field .field-icon {
+            position: absolute;
+            right: 13px;
+            top: 38px;
+            font-size: 17px;
+            color: var(--gray-500);
+            transition: color 0.2s, opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .field.valid input { border-color: var(--green-500); background: var(--gray-200); }
+        .field.valid .field-icon { color: var(--green-500); }
+        .field.error input { border-color: #e53935; background: var(--gray-300); box-shadow: 0 0 0 4px rgba(229,57,53,0.08); }
+        .field.error .field-icon { color: #e53935; }
+
+        .field .hint {
+            font-size: 12px;
+            color: #e53935;
+            margin-top: 5px;
+            display: none;
+            padding-left: 2px;
+        }
+
+        .field.error .hint { display: block; }
+
+        /* DIVIDER */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--gray-200);
+            margin: 1.75rem 0 1.5rem;
+        }
+
+        /* ACTIONS */
+        .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-cancel {
+            padding: 11px 22px;
+            background: transparent;
+            color: var(--gray-500);
+            border: 1.5px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex; align-items: center; gap: 7px;
+            transition: background 0.18s, color 0.18s, border-color 0.18s;
+            text-decoration: none;
+        }
+
+        .btn-cancel:hover {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            border-color: var(--gray-400);
+        }
+
+        .btn-save {
+            flex: 1;
+            padding: 12px 0;
+            background: var(--green-600);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+            box-shadow: 0 2px 12px rgba(79,70,229,0.25);
+            letter-spacing: 0.01em;
+        }
+
+        .btn-save:hover {
+            background: var(--green-700);
+            box-shadow: 0 4px 20px rgba(79,70,229,0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-save:active {
+            transform: scale(0.98) translateY(0);
+            box-shadow: 0 1px 6px rgba(79,70,229,0.2);
+        }
+
+        .btn-save.loading {
+            background: var(--green-200);
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        .spinner {
+            width: 17px; height: 17px;
+            border: 2.5px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            display: none;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .btn-save.loading .btn-label { display: none; }
+        .btn-save.loading .spinner { display: block; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* SUCCESS OVERLAY */
+        .success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem 0 0;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .success-overlay.show { display: flex; }
+        .fields-section.hide { display: none; }
+
+        .success-icon {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: var(--green-100);
+            border: 2px solid var(--green-300);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; color: var(--green-600);
+            animation: popIn 0.45s cubic-bezier(.34,1.56,.64,1);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.4); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .success-overlay h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .success-overlay p {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .success-summary {
+            background: var(--gray-200);
+            border: 1px solid var(--green-200);
+            border-radius: 10px;
+            padding: 14px 20px;
+            width: 100%;
+            max-width: 340px;
+            text-align: left;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+
+        .summary-row:not(:last-child) { border-bottom: 1px solid var(--gray-300); }
+        .summary-row .key { color: var(--gray-500); }
+        .summary-row .val { color: var(--gray-800); font-weight: 500; }
+
+        .btn-new {
+            margin-top: 6px;
+            padding: 11px 28px;
+            background: var(--green-600);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex; align-items: center; gap: 8px;
+            transition: background 0.18s, transform 0.12s;
+            box-shadow: 0 2px 12px rgba(79,70,229,0.25);
+        }
+
+        .btn-new:hover { background: var(--green-700); transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">
+                    <i class="ti ti-car" aria-hidden="true"></i>
+                </div>
+                <h1>Locadora<br>de Veículos</h1>
+                <p>Cadastro de clientes para liberação de locações.</p>
+
+                <div class="sidebar-steps">
+                    <div class="step-item">
+                        <div class="step-dot active">1</div>
+                        <div class="step-text">
+                            <strong>Dados pessoais</strong>
+                            <span>Nome, CPF e CNH</span>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot">2</div>
+                        <div class="step-text">
+                            <strong>Validação</strong>
+                            <span>Verificação dos documentos</span>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot">3</div>
+                        <div class="step-text">
+                            <strong>Ativação</strong>
+                            <span>Cliente liberado para locações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="avatar">
+                    <i class="ti ti-shield-check" aria-hidden="true"></i>
+                </div>
+                <span>Dados protegidos e criptografados</span>
+            </div>
+        </aside>
+
+        <!-- FORM -->
+        <div class="form-card">
+            <div class="form-header">
+                <div class="eyebrow">Passo 1 de 3</div>
+                <h2>Dados do cliente</h2>
+                <p>Preencha todos os campos para prosseguir.</p>
+            </div>
+
+            <div class="progress-row">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <span class="progress-label" id="progress-label">0%</span>
+            </div>
+
+            <div class="fields-section" id="fields-section">
+                <div class="fields-grid">
+
+                    <div class="field" id="f-nome">
+                        <label for="inp-nome">
+                            <i class="ti ti-user" aria-hidden="true"></i> Nome completo
+                        </label>
+                        <input type="text" id="inp-nome" placeholder="Ex: Maria da Silva" autocomplete="off">
+                        <i class="ti ti-circle-check field-icon" id="icon-nome" aria-hidden="true"></i>
+                        <div class="hint">Informe o nome completo (mínimo duas palavras)</div>
+                    </div>
+
+                    <div class="field" id="f-cpf">
+                        <label for="inp-cpf">
+                            <i class="ti ti-id-badge" aria-hidden="true"></i> CPF
+                        </label>
+                        <input type="text" id="inp-cpf" placeholder="000.000.000-00" maxlength="14" autocomplete="off">
+                        <i class="ti ti-circle-check field-icon" id="icon-cpf" aria-hidden="true"></i>
+                        <div class="hint">CPF inválido — informe os 11 dígitos</div>
+                    </div>
+
+                    <div class="field" id="f-cnh">
+                        <label for="inp-cnh">
+                            <i class="ti ti-license" aria-hidden="true"></i> CNH
+                        </label>
+                        <input type="text" id="inp-cnh" placeholder="Número da CNH (9 a 11 dígitos)" maxlength="11" autocomplete="off">
+                        <i class="ti ti-circle-check field-icon" id="icon-cnh" aria-hidden="true"></i>
+                        <div class="hint">CNH inválida — informe entre 9 e 11 dígitos</div>
+                    </div>
+
+                </div>
+
+                <hr class="divider">
+
+                <div class="actions">
+                    <a href="{{ url_for('locadora.index') }}" class="btn-cancel">
+                        <i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar
+                    </a>
+                    <button class="btn-save" id="btn-save" onclick="salvar()">
+                        <span class="btn-label">
+                            <i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar cliente
+                        </span>
+                        <div class="spinner"></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUCCESS -->
+            <div class="success-overlay" id="success-overlay">
+                <div class="success-icon">
+                    <i class="ti ti-check" aria-hidden="true"></i>
+                </div>
+                <h3>Cliente cadastrado!</h3>
+                <p>Os dados foram salvos com sucesso.</p>
+
+                <div class="success-summary" id="success-summary">
+                    <div class="summary-row">
+                        <span class="key">Nome</span>
+                        <span class="val" id="s-nome">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="key">CPF</span>
+                        <span class="val" id="s-cpf">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="key">CNH</span>
+                        <span class="val" id="s-cnh">—</span>
+                    </div>
+                </div>
+
+                <button class="btn-new" onclick="resetar()">
+                    <i class="ti ti-user-plus" aria-hidden="true"></i> Novo cadastro
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const fields = {
+        nome: {
+            el: document.getElementById('inp-nome'),
+            wrap: document.getElementById('f-nome'),
+            validate: v => v.trim().split(/\s+/).length >= 2 && v.trim().length >= 4
+        },
+        cpf: {
+            el: document.getElementById('inp-cpf'),
+            wrap: document.getElementById('f-cpf'),
+            validate: v => v.replace(/\D/g,'').length === 11
+        },
+        cnh: {
+            el: document.getElementById('inp-cnh'),
+            wrap: document.getElementById('f-cnh'),
+            validate: v => { const d = v.replace(/\D/g,'').length; return d >= 9 && d <= 11; }
+        }
+    };
+
+    function maskCPF(v) {
+        v = v.replace(/\D/g,'').slice(0,11);
+        if (v.length > 9) return v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+        if (v.length > 6) return v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+        if (v.length > 3) return v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+        return v;
+    }
+
+    fields.cpf.el.addEventListener('input', e => { e.target.value = maskCPF(e.target.value); updateField('cpf'); });
+    fields.nome.el.addEventListener('input', () => updateField('nome'));
+    fields.cnh.el.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,''); updateField('cnh'); });
+
+    function updateField(name) {
+        const f = fields[name];
+        f.wrap.classList.remove('valid', 'error');
+        if (f.el.value.length > 0 && f.validate(f.el.value)) {
+            f.wrap.classList.add('valid');
+        }
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const total = Object.keys(fields).length;
+        const done = Object.values(fields).filter(f => f.validate(f.el.value)).length;
+        const pct = Math.round((done / total) * 100);
+        document.getElementById('progress').style.width = pct + '%';
+        document.getElementById('progress-label').textContent = pct + '%';
+    }
+
+    function salvar() {
+        let ok = true;
+        Object.keys(fields).forEach(name => {
+            const f = fields[name];
+            f.wrap.classList.remove('valid', 'error');
+            if (!f.validate(f.el.value)) {
+                f.wrap.classList.add('error');
+                ok = false;
+            } else {
+                f.wrap.classList.add('valid');
+            }
+        });
+        if (!ok) return;
+
+        const btn = document.getElementById('btn-save');
+        btn.classList.add('loading');
+        document.getElementById('progress').style.width = '100%';
+        document.getElementById('progress-label').textContent = '100%';
+
+        const data = new URLSearchParams();
+        data.append('nome', fields.nome.el.value.trim());
+        data.append('cpf', fields.cpf.el.value);
+        data.append('cnh', fields.cnh.el.value);
+
+        fetch('/locadora/clientes/cadastrar', {
+            method: 'POST',
+            body: data
+        }).then(res => {
+            if (res.redirected) {
+                window.location.href = '/locadora/';
+            }
+        }).catch(() => {
+            btn.classList.remove('loading');
+            alert('Erro ao cadastrar cliente. Tente novamente.');
+        });
+    }
+
+    function resetar() {
+        Object.values(fields).forEach(f => {
+            f.el.value = '';
+            f.wrap.classList.remove('valid', 'error');
+        });
+        document.getElementById('progress').style.width = '0%';
+        document.getElementById('progress-label').textContent = '0%';
+        document.getElementById('success-overlay').classList.remove('show');
+        document.getElementById('fields-section').classList.remove('hide');
+    }
+</script>
+</body>
+</html>

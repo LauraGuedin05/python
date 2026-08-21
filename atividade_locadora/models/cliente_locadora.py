@@ -1,0 +1,16 @@
+from . import db
+from .base import ModeloBase
+
+
+class ClienteLocadora(ModeloBase):
+    __tablename__ = "clientes_locadora"
+
+    nome = db.Column(db.String(120), nullable=False)
+    cpf = db.Column(db.String(14), unique=True, nullable=False)
+    cnh = db.Column(db.String(20), unique=True, nullable=False)
+
+    locacoes = db.relationship("Locacao", back_populates="cliente")
+
+    @classmethod
+    def listar(cls):
+        return cls.query.order_by(cls.nome).all()
