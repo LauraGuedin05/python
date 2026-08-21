@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículo - {{ nome }}</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #e2e8f0; background: #0b1120; }
+        .tech-box { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tech-item { padding: 8px 14px; background: #111a2e; border: 1px solid #334155; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div style="align-items: center;">
+      <h1>👋 {{ nome }}</h1>
+      <p>Estudante da {{ escola }}</p>
+    </div>
+    <hr/>
+    <div class="tech-box">
+        {% for tech in tecnologias %}
+            <div class="tech-item">{{ tech }}</div>
+        {% endfor %}
+    </div>
+    <p>Contato: {{ email }}</p>
+</body>
+</html>

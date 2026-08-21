@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Alunos Completa</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #e2e8f0; background: #0b1120; }
+        table { background: #111a2e; border-collapse: collapse; }
+        th, td { border: 1px solid #334155; padding: 8px; }
+        th { background: #1e293b; color: #e2e8f0; }
+    </style>
+</head>
+<body>
+
+    <h2>Lista de Alunos, Idades e Notas</h2>
+    
+    <table cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Aluno</th>
+                <th>Idade</th>
+                <th>Nota</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluno in alunos %}
+            <tr>
+                <td>{{ aluno.nome }}</td>
+                <td>{{ aluno.idade }} anos</td>
+                <td>{{ aluno.nota }}</td>
+                <td>
+                    {% if aluno.nota >= 7 %}
+                        <span style="color: #4ade80; font-weight: bold;">Aprovado</span>
+                    {% else %}
+                        <span style="color: #f87171; font-weight: bold;">Reprovado</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
